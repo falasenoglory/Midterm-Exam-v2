@@ -10,4 +10,7 @@
     tools:context="com.shayian.midtermexam.MainActivity">
 
     <include layout="@layout/content_main"/>
+
+
+
 </RelativeLayout>
