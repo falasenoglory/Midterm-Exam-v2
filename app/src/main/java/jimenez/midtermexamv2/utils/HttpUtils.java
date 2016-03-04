@@ -3,15 +3,19 @@ package jimenez.midtermexamv2.utils;
 /**
  * Created by Shanyl Jimenez on 2/23/2016.
  */
-
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -25,14 +29,16 @@ public class HttpUtils {
     /**
      * Retrieves the response data in String format from the specifed URL.
      *
-     * @param sUrl          the well-formed URL to retrieve the data from
-     * @param requestMethod the method used for requesting data (e.g., POST, GET, PUT, DELETE, etc).
+     * @param sUrl the well-formed URL to retrieve the data from
      * @return the response data in String format.
      */
-    public static String getResponse(String sUrl, String requestMethod) {
+    public static String GET(String sUrl) {
         if (TextUtils.isEmpty(sUrl)) {
             throw new RuntimeException("Passed URL is either null or empty.");
         }
+
+        String requestMethod = "GET";
+
         if (TextUtils.isEmpty(requestMethod)) {
             throw new RuntimeException("Request Method is null or empty");
         }
@@ -97,11 +103,161 @@ public class HttpUtils {
     /**
      * Retrieves the response data in String format from the specifed URI.
      *
-     * @param uri           the built uri to retrieve data from.
-     * @param requestMethod the method used for requesting data (e.g., POST, GET, PUT, DELETE, etc).
+     * @param uri the built uri to retrieve data from.
      * @return the response data in String format.
      */
-    public static String getResponse(Uri uri, String requestMethod) {
-        return getResponse(uri.toString(), requestMethod);
+    public static String GET(Uri uri) {
+        return GET(uri.toString());
+    }
+
+    /**
+     * Posts a JSON Request to the server endpoint.
+     *
+     * @param uri  the built uri to post data to
+     * @param json the data to be posted in JSON format
+     * @return the JSON response data in String format
+     */
+    public static String POST(Uri uri, JSONObject json) {
+        return PLACE(uri.toString(), "POST", json);
+    }
+
+    /**
+     * Posts a JSON Request to the server endpoint.
+     *
+     * @param url  the built url to post data to
+     * @param json the data to be posted in JSON format
+     * @return the JSON response data in String format
+     */
+    public static String POST(String url, JSONObject json) {
+        return PLACE(url, "POST", json);
+    }
+
+    /**
+     * Posts an update to a server resource by posting JSON-formatted request.
+     *
+     * @param uri  the built uri to put data to
+     * @param json the data to be posted in JSON format
+     * @return the JSON response data in String format
+     */
+    public static String PUT(Uri uri, JSONObject json) {
+        return PLACE(uri.toString(), "PUT", json);
+    }
+
+    /**
+     * Posts an update to a server resource by posting JSON-formatted request.
+     *
+     * @param url  the built url to put data to
+     * @param json the data to be posted in JSON format
+     * @return the JSON response data in String format
+     */
+    public static String PUT(String url, JSONObject json) {
+        return PLACE(url, "PUT", json);
+    }
+
+    /**
+     * Posts an update to a server resource by posting JSON-formatted request.
+     *
+     * @param uri  the built uri to put data to
+     * @param json the data to be posted in JSON format
+     * @return the JSON response data in String format
+     */
+    public static String PATCH(Uri uri, JSONObject json) {
+        return PLACE(uri.toString(), "PATCH", json);
+    }
+
+    /**
+     * Posts an update to a server resource by posting JSON-formatted request.
+     *
+     * @param url  the built url to put data to
+     * @param json the data to be posted in JSON format
+     * @return the JSON response data in String format
+     */
+    public static String PATCH(String url, JSONObject json) {
+        return PLACE(url, "PATCH", json);
+    }
+
+    /**
+     * Removes a server resource.
+     *
+     * @param uri the built uri to command the delete operation
+     * @return the response code from the server after performing the operation
+     */
+    public static int DELETE(Uri uri) {
+        return DELETE(uri.toString());
+    }
+
+    /**
+     * Posts a JSON Request to the server endpoint.
+     *
+     * @param sUrl          the built url to post data to
+     * @param requestMethod the method to use when requesting a POST, PUT, PATCH operations
+     * @param json          the data to be posted in JSON format
+     * @return the JSON response data in String format
+     */
+    private static String PLACE(String sUrl, String requestMethod, JSONObject json) {
+        HttpURLConnection urlConnection;
+
+        try {
+            // Connect
+            URL url = new URL(sUrl);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestMethod(requestMethod);
+            urlConnection.connect();
+
+            // Write
+            OutputStream outputStream = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                    outputStream, "UTF-8"));
+            writer.write(json.toString());
+            writer.close();
+            outputStream.close();
+
+            // Read
+            InputStream inputStream = urlConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                    inputStream, "UTF-8"));
+            String line;
+            StringBuffer buffer = new StringBuffer();
+
+            while ((line = bufferedReader.readLine()) != null) {
+                buffer.append(line);
+            }
+
+            bufferedReader.close();
+            inputStream.close();
+
+            return buffer.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Removes a server resource.
+     *
+     * @param sUrl the built url to command the delete operation
+     * @return the response code from the server after performing the operation
+     */
+    public static int DELETE(String sUrl) {
+        HttpURLConnection urlConnection;
+
+        try {
+            // Connect
+            URL url = new URL(sUrl);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestMethod("DELETE");
+            urlConnection.connect();
+
+            return urlConnection.getResponseCode();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return 400; // Bad Request
     }
 }

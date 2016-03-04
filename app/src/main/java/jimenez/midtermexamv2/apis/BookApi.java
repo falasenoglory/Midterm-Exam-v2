@@ -20,7 +20,7 @@ public class BookApi {
     public static ArrayList<Book> LBook = new ArrayList<>();
 
     public static ArrayList<Book> getBook(String uri, @NonNull String requestMethod) {
-        String json = HttpUtils.getResponse(uri, requestMethod);
+        String json = HttpUtils.GET(uri);
 
         if (TextUtils.isEmpty(json)) {
             return null;
