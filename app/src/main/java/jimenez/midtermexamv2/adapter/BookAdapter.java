@@ -1,6 +1,7 @@
 package jimenez.midtermexamv2.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
     private Context mContext;
     private int    mLayoutId;
     private List<Book> mBooks= new ArrayList<>();
+    private TextView txtName;
 
     public BookAdapter(Context context, int resource, List<Book> movies) {
         super(context, resource, movies);
@@ -56,6 +58,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
                 if(book.isRead()==true)
                 {
                     viewHolder.tvName.setPaintFlags(viewHolder.tvName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    viewHolder.tvName.setTextColor(Color.RED);
                 }
             }
         }

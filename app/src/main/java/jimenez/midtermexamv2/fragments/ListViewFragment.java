@@ -81,6 +81,7 @@ public class ListViewFragment extends Fragment implements AdapterView.OnItemClic
 
     public class FetchWeatherTask extends AsyncTask<String, Void, ArrayList<Book>> {
 
+
         @Override
         protected ArrayList<Book> doInBackground(String... params) {
 
@@ -89,6 +90,7 @@ public class ListViewFragment extends Fragment implements AdapterView.OnItemClic
 
         @Override
         protected void onPostExecute(ArrayList<Book> books) {
+
             super.onPostExecute(books);
             adapter.addAll(books);
         }
