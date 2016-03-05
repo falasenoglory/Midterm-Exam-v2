@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -63,6 +65,27 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+
+
+        return true;
+    }
+
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     public class FetchWeatherTask extends AsyncTask<String, Void, ArrayList<Book>> {
 
@@ -83,6 +106,7 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<Book> books) {
             super.onPostExecute(books);
+
             Book book= books.get(position);
             txtTitle.setText(book.getTitle());
             txtGenre.setText(book.getGenre());
@@ -91,6 +115,7 @@ public class DetailActivity extends AppCompatActivity {
             {
                 cbisRead.setChecked(true);
             }
+
         }
 
     }
