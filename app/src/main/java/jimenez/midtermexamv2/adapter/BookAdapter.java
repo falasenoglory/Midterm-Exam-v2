@@ -24,6 +24,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
     private int    mLayoutId;
     private List<Book> mBooks= new ArrayList<>();
     private TextView txtName;
+    private List<Book> LBook = new ArrayList<>();
 
     public BookAdapter(Context context, int resource, List<Book> movies) {
         super(context, resource, movies);
@@ -69,6 +70,9 @@ public class BookAdapter extends ArrayAdapter<Book> {
     private static class ViewHolder {
         public TextView  tvName;
     }
+
+
+
 
 
 

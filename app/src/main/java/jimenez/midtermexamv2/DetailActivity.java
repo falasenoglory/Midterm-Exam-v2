@@ -1,0 +1,98 @@
+package jimenez.midtermexamv2;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.CheckBox;
+import android.widget.EditText;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jimenez.midtermexamv2.apis.BookApi;
+import jimenez.midtermexamv2.models.Book;
+
+public class DetailActivity extends AppCompatActivity {
+
+    private EditText txtTitle;
+    private EditText txtGenre;
+    private EditText txtAuthor;
+    private CheckBox cbisRead;
+    private Boolean isEdit;
+    private List<Book> LBook = new ArrayList<>();
+    private int position;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        Bundle intent = getIntent().getExtras();
+        if (intent == null) {
+            throw new RuntimeException("MovieDetailsActivity is expecting an int extra passed by Intent");
+        }
+        position = intent.getInt("Position", -1);
+        if (position == -1) {
+            throw new IllegalArgumentException("position passed is invalid.");
+        }
+
+        isEdit=intent.getBoolean("isEdit");
+
+        txtTitle=(EditText)findViewById(R.id.txtTitle);
+        txtGenre=(EditText)findViewById(R.id.txtGenre);
+        txtAuthor=(EditText)findViewById(R.id.txtAuthor);
+        cbisRead=(CheckBox)findViewById(R.id.cbisRead);
+
+        if(isEdit==false)
+        {
+            txtTitle.setEnabled(false);
+            txtAuthor.setEnabled(false);
+            txtGenre.setEnabled(false);
+            cbisRead.setEnabled(false);
+
+        }
+
+        FetchWeatherTask tsk= new FetchWeatherTask(this);
+        tsk.execute();
+
+
+    }
+
+
+    public class FetchWeatherTask extends AsyncTask<String, Void, ArrayList<Book>> {
+
+
+        private Context ctx;
+
+        public FetchWeatherTask(Context context) {
+            this.ctx = context ;
+
+        }
+
+        @Override
+        protected ArrayList<Book> doInBackground(String... params) {
+
+            return BookApi.getBook("http://joseniandroid.herokuapp.com/api/books", "GET");
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Book> books) {
+            super.onPostExecute(books);
+            Book book= books.get(position);
+            txtTitle.setText(book.getTitle());
+            txtGenre.setText(book.getGenre());
+            txtAuthor.setText(book.getAuthor());
+            if(book.isRead()==true)
+            {
+                cbisRead.setChecked(true);
+            }
+        }
+
+    }
+
+}
