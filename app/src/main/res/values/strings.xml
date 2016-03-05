@@ -6,5 +6,4 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="stringEdit">Edit</string>
     <string name="stringDelete">Delete</string>
-    <string name="stringRefresh">Refresh</string>
 </resources>

@@ -34,6 +34,11 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         Bundle intent = getIntent().getExtras();
         if (intent == null) {
             throw new RuntimeException("MovieDetailsActivity is expecting an int extra passed by Intent");
@@ -80,6 +85,7 @@ public class DetailActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
 
 
         return super.onOptionsItemSelected(item);
