@@ -1,5 +1,6 @@
 package jimenez.midtermexamv2;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -96,12 +97,24 @@ public class DetailActivity extends AppCompatActivity {
     public class FetchWeatherTask extends AsyncTask<String, Void, ArrayList<Book>> {
 
 
+        private ProgressDialog pdia;
         private Context ctx;
 
         public FetchWeatherTask(Context context) {
             this.ctx = context ;
 
         }
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+            pdia = new ProgressDialog(ctx);
+            pdia.setMessage("Getting Book Data ...");
+            pdia.setCancelable(false);
+            pdia.show();
+        }
+
 
         @Override
         protected ArrayList<Book> doInBackground(String... params) {
@@ -112,7 +125,7 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<Book> books) {
             super.onPostExecute(books);
-
+pdia.dismiss();
             Book book= books.get(position);
             txtTitle.setText(book.getTitle());
             txtGenre.setText(book.getGenre());
