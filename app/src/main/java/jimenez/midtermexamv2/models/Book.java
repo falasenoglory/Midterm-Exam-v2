@@ -4,27 +4,20 @@ package jimenez.midtermexamv2.models;
  * Created by Shanyl Jimenez on 2/23/2016.
  */
 public class Book {
-
-    private String id;
     private String title;
     private String genre;
     private String author;
     private boolean isRead;
 
-    public Book(String id, String title, String genre, String author, boolean isRead) {
-        this.id = id;
+    public Book( String title, String genre, String author, boolean isRead) {
+
         this.title = title;
         this.genre = genre;
         this.author = author;
         this.isRead = isRead;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public Book() {
     }
 
     public String getTitle() {

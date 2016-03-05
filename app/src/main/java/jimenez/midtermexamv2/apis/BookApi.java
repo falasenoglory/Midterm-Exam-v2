@@ -38,13 +38,13 @@ public class BookApi {
                 for(int i=0;i<jsonarray.length();i++) {
 
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
-                    id=jsonobject.getString("_id");
+                   // id=jsonobject.getString("_id");
                     title=jsonobject.getString("title");
                     genre=jsonobject.getString("genre");
                     author=jsonobject.getString("author");
                     isRead=jsonobject.getBoolean("isRead");
 
-                    LBook.add(new Book(id,title,genre,author,isRead));
+                    LBook.add(new Book(title,genre,author,isRead));
                 }
                 return LBook;
             } catch (JSONException e) {

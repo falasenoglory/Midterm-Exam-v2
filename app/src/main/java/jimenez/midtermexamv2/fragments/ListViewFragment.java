@@ -98,7 +98,7 @@ public class ListViewFragment extends Fragment implements AdapterView.OnItemClic
 
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("Position", position);
-        intent.putExtra("isEdit",false);
+        intent.putExtra("isEdit",true);
         startActivity(intent);
 
 

@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class DetailActivity extends AppCompatActivity {
     private int position;
     private MenuItem mi;
     private Menu menu;
+    private int editSave;
 
 
     @Override
@@ -39,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
         txtGenre = (EditText) findViewById(R.id.txtGenre);
         txtAuthor = (EditText) findViewById(R.id.txtAuthor);
         cbisRead = (CheckBox) findViewById(R.id.cbisRead);
+        editSave=1;
 
 
 
@@ -53,12 +57,12 @@ public class DetailActivity extends AppCompatActivity {
         }
         position = intent.getInt("Position", -1);
         if (position == -1) {
+            isEdit=false;
 
         }
         else {
             isEdit = intent.getBoolean("isEdit");
-
-            if (isEdit == false) {
+            if (isEdit == true) {
                 txtTitle.setEnabled(false);
                 txtAuthor.setEnabled(false);
                 txtGenre.setEnabled(false);
@@ -100,14 +104,47 @@ public class DetailActivity extends AppCompatActivity {
         }
         if(item.getItemId()== R.id.action_edit)
         {
-            menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_done));
-            txtTitle.setEnabled(true);
-            txtAuthor.setEnabled(true);
-            txtGenre.setEnabled(true);
-            cbisRead.setEnabled(true);
+            editSave++;
+
+            //from EDIT ICON TO DONE ICON
+            if(editSave%2==0) {
+                menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_done));
+                txtTitle.setEnabled(true);
+                txtAuthor.setEnabled(true);
+                txtGenre.setEnabled(true);
+                cbisRead.setEnabled(true);
+            }
+            //from DONE ICON TO EDIT ICON
+            else
+            {
+                if(isEdit==true) {
+                    menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_edit));
+                    isEdit = true;
+                    txtTitle.setEnabled(false);
+                    txtAuthor.setEnabled(false);
+                    txtGenre.setEnabled(false);
+                    cbisRead.setEnabled(false);
+                }
+                // TO SAVE DATA
+                else
+                {
+                    JSONObject json=new JSONObject();
+                    Book bk= new Book();
+                    bk=getBook();
+
+
+                }
+
+
+
+            }
 
 
         }
+
+
+
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -145,5 +182,24 @@ public class DetailActivity extends AppCompatActivity {
         }
 
     }
+
+    public Book getBook()
+    {
+        String stitle=txtTitle.getText().toString();
+        String sauthor= txtAuthor.getText().toString();
+        String sgenre=txtGenre.getText().toString();
+        Boolean sisread;
+        if(cbisRead.isChecked())
+        {
+            sisread=true;
+        }
+        else sisread=false;
+
+        Book newbook=new Book(stitle,sgenre,sauthor,sisread);
+
+       return newbook;
+    }
+
+
 
 }
