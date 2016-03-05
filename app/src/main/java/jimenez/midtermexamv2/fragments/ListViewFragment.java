@@ -2,6 +2,7 @@ package jimenez.midtermexamv2.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import jimenez.midtermexamv2.DetailActivity;
 import jimenez.midtermexamv2.R;
 import jimenez.midtermexamv2.adapter.BookAdapter;
 import jimenez.midtermexamv2.apis.BookApi;
@@ -79,6 +81,12 @@ public class ListViewFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick (AdapterView < ? > parent, View view,int position, long id){
+
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra("Position", position);
+        intent.putExtra("isEdit",false);
+        startActivity(intent);
+
 
     }
 

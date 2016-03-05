@@ -3,4 +3,5 @@
     <string name="nodata">No data available yet</string>
     <string name="bookname">Book Name</string>
     <string name="Refresh">Refresh</string>
+    <string name="title_activity_detail">DetailActivity</string>
 </resources>
