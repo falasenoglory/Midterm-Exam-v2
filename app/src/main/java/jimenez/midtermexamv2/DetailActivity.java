@@ -1,5 +1,6 @@
 package jimenez.midtermexamv2;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import jimenez.midtermexamv2.apis.BookApi;
 import jimenez.midtermexamv2.models.Book;
+import jimenez.midtermexamv2.utils.HttpUtils;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -30,6 +33,7 @@ public class DetailActivity extends AppCompatActivity {
     private MenuItem mi;
     private Menu menu;
     private int editSave;
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -128,9 +132,21 @@ public class DetailActivity extends AppCompatActivity {
                 // TO SAVE DATA
                 else
                 {
-                    JSONObject json=new JSONObject();
+
+                    JSONObject json= new JSONObject();
                     Book bk= new Book();
                     bk=getBook();
+                    try {
+                        json.put("title",bk.getTitle());
+                        json.put("genre",bk.getGenre());
+                        json.put("author",bk.getAuthor());
+                        json.put("isRead", bk.isRead());
+
+                        HttpUtils.POST("http://joseniandroid.herokuapp.com/api/books/{bookId}",json);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
 
 
                 }
@@ -152,13 +168,25 @@ public class DetailActivity extends AppCompatActivity {
 
     public class FetchWeatherTask extends AsyncTask<String, Void, ArrayList<Book>> {
 
-
+        ProgressDialog pdialog;
         private Context ctx;
 
         public FetchWeatherTask(Context context) {
             this.ctx = context ;
 
         }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            pdialog=new ProgressDialog(ctx);
+            pdialog.setMessage("Getting Book Data ...");
+            pdialog.show();
+
+        }
+
+
 
         @Override
         protected ArrayList<Book> doInBackground(String... params) {
@@ -169,7 +197,7 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<Book> books) {
             super.onPostExecute(books);
-
+            pdialog.dismiss();
             Book book= books.get(position);
             txtTitle.setText(book.getTitle());
             txtGenre.setText(book.getGenre());

@@ -42,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if(id==R.id.action_settings)
+        {
+            mListViewFragment = ListViewFragment.newInstance();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .detach(mListViewFragment)
+                    .attach(mListViewFragment)
+                    .commit();
+        }
 
         return super.onOptionsItemSelected(item);
     }
