@@ -110,7 +110,7 @@ public class DetailActivity extends AppCompatActivity {
 
             super.onPreExecute();
             pdia = new ProgressDialog(ctx);
-            pdia.setMessage("Getting Book Data ...");
+            pdia.setMessage("Getting Book Data ....");
             pdia.setCancelable(false);
             pdia.show();
         }
