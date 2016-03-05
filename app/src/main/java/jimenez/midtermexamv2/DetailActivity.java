@@ -81,9 +81,9 @@ public class DetailActivity extends AppCompatActivity {
 
         if (position == -1) {
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_done));
+            menu.getItem(1).setVisible(false);
            // mi.setIcon(R.drawable.ic_done);
         }
-
 
         return true;
     }
@@ -101,6 +101,11 @@ public class DetailActivity extends AppCompatActivity {
         if(item.getItemId()== R.id.action_edit)
         {
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_done));
+            txtTitle.setEnabled(true);
+            txtAuthor.setEnabled(true);
+            txtGenre.setEnabled(true);
+            cbisRead.setEnabled(true);
+
 
         }
         return super.onOptionsItemSelected(item);
