@@ -25,6 +25,8 @@ public class DetailActivity extends AppCompatActivity {
     private Boolean isEdit;
     private List<Book> LBook = new ArrayList<>();
     private int position;
+    private MenuItem mi;
+    private Menu menu;
 
 
     @Override
@@ -33,6 +35,12 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        txtTitle = (EditText) findViewById(R.id.txtTitle);
+        txtGenre = (EditText) findViewById(R.id.txtGenre);
+        txtAuthor = (EditText) findViewById(R.id.txtAuthor);
+        cbisRead = (CheckBox) findViewById(R.id.cbisRead);
+
+
 
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,27 +53,22 @@ public class DetailActivity extends AppCompatActivity {
         }
         position = intent.getInt("Position", -1);
         if (position == -1) {
-            throw new IllegalArgumentException("position passed is invalid.");
-        }
-
-        isEdit=intent.getBoolean("isEdit");
-
-        txtTitle=(EditText)findViewById(R.id.txtTitle);
-        txtGenre=(EditText)findViewById(R.id.txtGenre);
-        txtAuthor=(EditText)findViewById(R.id.txtAuthor);
-        cbisRead=(CheckBox)findViewById(R.id.cbisRead);
-
-        if(isEdit==false)
-        {
-            txtTitle.setEnabled(false);
-            txtAuthor.setEnabled(false);
-            txtGenre.setEnabled(false);
-            cbisRead.setEnabled(false);
 
         }
+        else {
+            isEdit = intent.getBoolean("isEdit");
 
-        FetchWeatherTask tsk= new FetchWeatherTask(this);
-        tsk.execute();
+            if (isEdit == false) {
+                txtTitle.setEnabled(false);
+                txtAuthor.setEnabled(false);
+                txtGenre.setEnabled(false);
+                cbisRead.setEnabled(false);
+                FetchWeatherTask tsk = new FetchWeatherTask(this);
+                tsk.execute();
+            }
+        }
+
+
 
 
     }
@@ -74,6 +77,12 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        this.menu = menu;
+
+        if (position == -1) {
+            menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_done));
+           // mi.setIcon(R.drawable.ic_done);
+        }
 
 
         return true;
@@ -86,8 +95,14 @@ public class DetailActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        if(item.getItemId()== R.id.action_edit)
+        {
+            menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_done));
 
-
+        }
         return super.onOptionsItemSelected(item);
     }
 

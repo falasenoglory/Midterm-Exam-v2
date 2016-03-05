@@ -64,9 +64,6 @@ public class ListViewFragment extends Fragment implements AdapterView.OnItemClic
         mTvEmpty = (TextView) view.findViewById(android.R.id.empty);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mTvEmpty.setText("Fetching data from cloud...");
-
-        fb=(FloatingActionButton) view.findViewById(R.id.fab);
-        fb.hide();
         // create a new instance of adapter
         adapter = new BookAdapter(getActivity(),
                 R.layout.list_item, LBook);
@@ -76,7 +73,24 @@ public class ListViewFragment extends Fragment implements AdapterView.OnItemClic
 
         // set item click listener
         mListView.setOnItemClickListener(this);
+
+
+        fb=(FloatingActionButton) view.findViewById(R.id.fab);
+        fb.hide();
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("Position", -1);
+                intent.putExtra("isEdit", false);
+                startActivity(intent);
+            }
+        });
+
+
     }
+
+
 
 
     @Override
